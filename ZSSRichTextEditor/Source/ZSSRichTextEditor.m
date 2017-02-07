@@ -1928,8 +1928,25 @@ static CGFloat kDefaultScale = 0.5;
     CGFloat sizeOfToolbar = self.toolbarHolder.frame.size.height;
     
     // Keyboard Size
+    
+    // fix for external keyboard
     //Checks if IOS8, gets correct keyboard height
-    CGFloat keyboardHeight = UIInterfaceOrientationIsLandscape(orientation) ? ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.000000) ? keyboardEnd.size.height : keyboardEnd.size.width : keyboardEnd.size.height;
+    //    CGFloat keyboardHeight = UIInterfaceOrientationIsLandscape(orientation) ? ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.000000) ? keyboardEnd.size.height : keyboardEnd.size.width : keyboardEnd.size.height;
+    //
+    
+    CGFloat keyboardHeight;
+    NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect keyboardFrame = [kbFrame CGRectValue];
+    CGRect finalKeyboardFrame = [self.view convertRect:keyboardFrame fromView:self.view.window];
+    int kbHeight;;
+    CGFloat height = self.view.frame.size.height;
+    if ((finalKeyboardFrame.origin.y + finalKeyboardFrame.size.height) > height) {
+        keyboardHeight = 0;
+    }else{
+        keyboardHeight = finalKeyboardFrame.size.height;
+    }
+    
     
     // Correct Curve
     UIViewAnimationOptions animationOptions = curve << 16;
