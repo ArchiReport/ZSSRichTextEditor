@@ -1936,13 +1936,11 @@ static CGFloat kDefaultScale = 0.5;
     
     CGFloat keyboardHeight;
     NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
-    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGRect keyboardFrame = [kbFrame CGRectValue];
     CGRect finalKeyboardFrame = [self.view convertRect:keyboardFrame fromView:self.view.window];
-    int kbHeight;;
     CGFloat height = self.view.frame.size.height;
     if ((finalKeyboardFrame.origin.y + finalKeyboardFrame.size.height) > height) {
-        keyboardHeight = 0;
+        keyboardHeight = sizeOfToolbar+10;
     }else{
         keyboardHeight = finalKeyboardFrame.size.height;
     }
@@ -1951,7 +1949,7 @@ static CGFloat kDefaultScale = 0.5;
     // Correct Curve
     UIViewAnimationOptions animationOptions = curve << 16;
     
-    const int extraHeight = 10;
+    const int extraHeight = 0;
     
     if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
         
