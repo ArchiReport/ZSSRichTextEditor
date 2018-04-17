@@ -53,6 +53,7 @@ typedef enum {
 }
 
 @property (nonatomic) int tag;
+@property (assign) BOOL cancelButtonHidden;
 
 + (HRColorPickerViewController *)colorPickerViewControllerWithColor:(UIColor *)color;
 + (HRColorPickerViewController *)cancelableColorPickerViewControllerWithColor:(UIColor *)color;
