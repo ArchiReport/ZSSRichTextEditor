@@ -1939,10 +1939,14 @@ static CGFloat kDefaultScale = 0.5;
     CGRect keyboardFrame = [kbFrame CGRectValue];
     CGRect finalKeyboardFrame = [self.view convertRect:keyboardFrame fromView:self.view.window];
     CGFloat height = self.view.frame.size.height;
-    if ((finalKeyboardFrame.origin.y + finalKeyboardFrame.size.height) > height) {
+    if ((finalKeyboardFrame.origin.y + finalKeyboardFrame.size.height) > height+100) {
         keyboardHeight = sizeOfToolbar+10;
     }else{
-        keyboardHeight = finalKeyboardFrame.size.height;
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+            keyboardHeight = finalKeyboardFrame.size.height ;
+        }else{
+            keyboardHeight = finalKeyboardFrame.size.height - sizeOfToolbar ;
+        }
     }
     
     
@@ -1974,7 +1978,7 @@ static CGFloat kDefaultScale = 0.5;
             self.sourceView.frame = sourceFrame;
             
             // Provide editor with keyboard height and editor view height
-            [self setFooterHeight:(keyboardHeight - 8)];
+            [self setFooterHeight:(keyboardHeight)];
             [self setContentHeight: self.editorViewFrame.size.height];
             
         } completion:nil];
