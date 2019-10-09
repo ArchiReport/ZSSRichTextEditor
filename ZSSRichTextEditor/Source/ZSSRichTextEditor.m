@@ -1939,13 +1939,22 @@ static CGFloat kDefaultScale = 0.5;
     CGRect keyboardFrame = [kbFrame CGRectValue];
     CGRect finalKeyboardFrame = [self.view convertRect:keyboardFrame fromView:self.view.window];
     CGFloat height = self.view.frame.size.height;
-    if ((finalKeyboardFrame.origin.y + finalKeyboardFrame.size.height) > height+100) {
-        keyboardHeight = sizeOfToolbar+10;
-    }else{
-        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-            keyboardHeight = finalKeyboardFrame.size.height ;
+   
+    if (@available(iOS 13.0, *)) {
+        if ((finalKeyboardFrame.origin.y + finalKeyboardFrame.size.height) > height+100) {
+            keyboardHeight = sizeOfToolbar+10;
         }else{
-            keyboardHeight = finalKeyboardFrame.size.height - sizeOfToolbar ;
+            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+                keyboardHeight = finalKeyboardFrame.size.height ;
+            }else{
+                keyboardHeight = finalKeyboardFrame.size.height - sizeOfToolbar ;
+            }
+        }
+    }else{
+     if ((finalKeyboardFrame.origin.y + finalKeyboardFrame.size.height) > height) {
+            keyboardHeight = sizeOfToolbar+10;
+        }else{
+            keyboardHeight = finalKeyboardFrame.size.height ;
         }
     }
     
