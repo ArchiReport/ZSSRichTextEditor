@@ -47,7 +47,7 @@ zss_editor.init = function() {
                                 });
     
     $(document).on('selectionchange',function(e){
-                   zss_editor.calculateEditorHeightWithCaretPosition();
+                   /*zss_editor.calculateEditorHeightWithCaretPosition();*/
                    zss_editor.setScrollPosition();
                    zss_editor.enabledEditingItems(e);
                    });
@@ -56,10 +56,28 @@ zss_editor.init = function() {
                  zss_editor.updateOffset();
                  });
     
+    $(window).on('paste', function(event) {
+        
+        let paste = event.originalEvent.clipboardData.getData('text/plain');
+        paste = paste.split("\n").join("<br>");
+        paste = paste.split("\r").join("<br>");
+
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return false;
+        selection.deleteFromDocument();
+        
+        var span = document.createElement("span");
+        span.innerHTML = paste;
+        
+        selection.getRangeAt(0).insertNode(span);
+        event.preventDefault();
+    });
+   
+    
     // Make sure that when we tap anywhere in the document we focus on the editor
     $(window).on('touchmove', function(e) {
                  zss_editor.isDragging = true;
-                 zss_editor.updateScrollOffset = true;
+                 zss_editor.updateScrollOffset = false;
                  zss_editor.setScrollPosition();
                  zss_editor.enabledEditingItems(e);
                  });
@@ -229,7 +247,10 @@ zss_editor.setUnderline = function() {
 }
 
 zss_editor.setBlockquote = function() {
-    document.execCommand('formatBlock', false, '<blockquote>');
+    var range = document.getSelection().getRangeAt(0);
+    formatName = range.commonAncestorContainer.parentElement.nodeName === 'BLOCKQUOTE'
+    || range.commonAncestorContainer.nodeName === 'BLOCKQUOTE' ? '<P>' : '<BLOCKQUOTE>';
+    document.execCommand('formatBlock', false, formatName)
     zss_editor.enabledEditingItems();
 }
 
